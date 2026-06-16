@@ -1,3 +1,4 @@
+import './env.js'
 import { SignJWT, jwtVerify } from 'jose'
 
 const COOKIE_NAME = 'mcst_admin_session'
@@ -44,7 +45,7 @@ export function getTokenFromRequest(req) {
 }
 
 export function buildSessionCookie(token) {
-  const secure = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production'
+  const secure = process.env.VERCEL_ENV === 'production'
   const parts = [
     `${COOKIE_NAME}=${token}`,
     'Path=/',
@@ -57,7 +58,7 @@ export function buildSessionCookie(token) {
 }
 
 export function buildLogoutCookie() {
-  const secure = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production'
+  const secure = process.env.VERCEL_ENV === 'production'
   const parts = [`${COOKIE_NAME}=`, 'Path=/', 'HttpOnly', 'SameSite=Lax', 'Max-Age=0']
   if (secure) parts.push('Secure')
   return parts.join('; ')

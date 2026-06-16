@@ -1,3 +1,4 @@
+import './env.js'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 const CONFIG_FILE = 'labs-config.json'

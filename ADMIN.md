@@ -42,10 +42,29 @@ Set these in **Vercel → Project → Settings → Environment Variables**:
 
 ## Local development
 
-- `npm run dev` — students see labs from `public/labs-config.json`
-- `npx vercel dev` — full admin API + login locally
+- `npm run dev` — runs Vite with built-in `/api` support and reads `.env.local`
+- `npx vercel dev` — alternative full-stack local server
+
+Set credentials in `.env.local`:
+
+```env
+ADMIN_PASSWORD=your-instructor-password
+ADMIN_SESSION_SECRET=some-long-random-secret
+```
+
+Restart `npm run dev` after changing `.env.local`.
 
 Without `GITHUB_TOKEN` locally, admin save updates `labs-config.json` and `public/labs-config.json` on disk.
+
+## Troubleshooting login
+
+| Error | Fix |
+|-------|-----|
+| `Admin login is not configured` | Add `ADMIN_PASSWORD` in Vercel env vars or `.env.local`, then redeploy/restart |
+| `Invalid admin credentials` | Password does not match `ADMIN_PASSWORD` exactly |
+| Login succeeds but dashboard kicks you out | Redeploy after cookie fix; clear browser cookies for the site |
+| `Unable to save laboratory settings` | Add `GITHUB_TOKEN` with repo write access in Vercel |
+| Works locally but not on Vercel | Set `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET` in Vercel → Environment Variables → Redeploy |
 
 ## Quick release presets (admin panel)
 
