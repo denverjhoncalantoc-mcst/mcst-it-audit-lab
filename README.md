@@ -45,7 +45,14 @@ Evidence types include incident reports, policy documents, access logs, emails, 
 | `/company` | Sandbox Company Profile |
 | `/final-project` | Final Audit Project Guide |
 
-## Deploy to Vercel (with Alumnilink account)
+## Repository
+
+**GitHub:** [denverjhoncalantoc-mcst/mcst-it-audit-lab](https://github.com/denverjhoncalantoc-mcst/mcst-it-audit-lab)
+
+```bash
+git remote set-url origin https://github.com/denverjhoncalantoc-mcst/mcst-it-audit-lab.git
+git push -u origin main
+```
 
 Deploy as a **separate Vercel project** on the same account as Alumnilink. Full steps:
 

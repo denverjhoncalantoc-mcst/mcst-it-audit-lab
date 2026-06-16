@@ -28,7 +28,16 @@ git add .
 git commit -m "Prepare MCST IT Audit Lab for Vercel"
 ```
 
-Push to GitHub, GitLab, or Bitbucket.
+Push to GitHub:
+
+**Repository:** [github.com/denverjhoncalantoc-mcst/mcst-it-audit-lab](https://github.com/denverjhoncalantoc-mcst/mcst-it-audit-lab)
+
+```bash
+git remote set-url origin https://github.com/denverjhoncalantoc-mcst/mcst-it-audit-lab.git
+git push -u origin main
+```
+
+Then import in Vercel from GitHub, GitLab, or Bitbucket.
 
 ### 2. Import in Vercel
 
