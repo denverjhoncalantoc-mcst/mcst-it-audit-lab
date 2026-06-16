@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-mcst-50: #eff6ff;
+  --color-mcst-100: #dbeafe;
+  --color-mcst-200: #bfdbfe;
+  --color-mcst-300: #93c5fd;
+  --color-mcst-400: #60a5fa;
+  --color-mcst-500: #3b82f6;
+  --color-mcst-600: #2563eb;
+  --color-mcst-700: #1d4ed8;
+  --color-mcst-800: #1e40af;
+  --color-mcst-900: #1e3a8a;
+  --color-mcst-950: #172554;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 text-slate-800 antialiased;
+}
