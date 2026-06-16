@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import LabCard from '../components/LabCard'
-import { labs } from '../data/labs'
+import { enabledLabs, labs } from '../data/labs'
+
+const allLabsReleased = enabledLabs.length === labs.length
 
 const typeFilters = [
   { id: 'all', label: 'All Laboratories' },
@@ -14,7 +16,7 @@ export default function LaboratoryActivities() {
 
   const filteredLabs = useMemo(() => {
     const query = search.trim().toLowerCase()
-    return labs.filter((lab) => {
+    return enabledLabs.filter((lab) => {
       const matchesType = typeFilter === 'all' || lab.type === typeFilter
       const matchesSearch =
         !query ||
@@ -32,11 +34,18 @@ export default function LaboratoryActivities() {
       <div>
         <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Laboratory Investigations</h1>
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-          Fourteen phased audit engagements forming a semester-long investigation of MCST Retail
-          Corporation. Each laboratory session requires approximately 2.5 to 3 hours and follows
-          structured audit methodology with evidence review, analysis, and offline deliverables.
+          {allLabsReleased
+            ? 'Fourteen phased audit engagements forming a semester-long investigation of MCST Retail Corporation. Each laboratory session requires approximately 2.5 to 3 hours and follows structured audit methodology with evidence review, analysis, and offline deliverables.'
+            : `Phased audit investigations for MCST Retail Corporation. Currently, Lab ${enabledLabs.map((l) => l.id).join(', Lab ')} is available; additional laboratories will be released throughout the semester.`}
         </p>
       </div>
+
+      {!allLabsReleased && (
+        <div className="rounded-xl border border-mcst-200 bg-mcst-50 p-4 text-sm text-mcst-800">
+          <strong>Semester rollout:</strong> Only selected laboratories are open right now. Other labs
+          will be enabled by your instructor as the course progresses.
+        </div>
+      )}
 
       <div className="rounded-xl border border-mcst-200 bg-mcst-50 p-5">
         <h2 className="text-sm font-semibold text-mcst-900">How to Complete Each Laboratory</h2>
@@ -76,7 +85,8 @@ export default function LaboratoryActivities() {
       </div>
 
       <p className="text-sm text-slate-500">
-        Showing {filteredLabs.length} of {labs.length} laboratories
+        Showing {filteredLabs.length} of {enabledLabs.length} available laboratories
+        {!allLabsReleased && ` (${labs.length} total in the course)`}
       </p>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

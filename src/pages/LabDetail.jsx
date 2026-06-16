@@ -16,7 +16,7 @@ export default function LabDetail() {
     return (
       <div className="mx-auto max-w-3xl text-center">
         <h1 className="text-2xl font-bold text-slate-900">Lab Not Found</h1>
-        <p className="mt-2 text-slate-600">The requested laboratory activity does not exist.</p>
+        <p className="mt-2 text-slate-600">The requested laboratory is not available yet.</p>
         <Link to="/laboratory" className="mt-4 inline-block text-mcst-600 hover:text-mcst-800">
           &larr; Back to Laboratory Investigations
         </Link>

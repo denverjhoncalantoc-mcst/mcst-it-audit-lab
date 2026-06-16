@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { labs } from '../data/labs'
+import { enabledLabs } from '../data/labs'
 
 const labStructure = [
   { range: 'Labs 1–8', label: 'Guided Audit Investigation Activities', description: 'Phased evidence review, risk assessment, control evaluation, and findings documentation.' },
@@ -105,13 +105,13 @@ export default function Home() {
 
       <section>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-slate-900">Upcoming Laboratory Investigations</h2>
+          <h2 className="text-xl font-bold text-slate-900">Available Laboratory Investigations</h2>
           <Link to="/laboratory" className="text-sm font-medium text-mcst-600 hover:text-mcst-800">
             View all labs &rarr;
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {labs.slice(0, 4).map((lab) => (
+          {enabledLabs.map((lab) => (
             <Link
               key={lab.id}
               to={`/laboratory/${lab.slug}`}

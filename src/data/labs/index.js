@@ -18,6 +18,15 @@ export const labs = [
   lab08, lab09, lab10, lab11, lab12, lab13, lab14,
 ]
 
+/** Labs currently available to students. Add IDs (e.g. 2, 3) as each lab opens. */
+export const ENABLED_LAB_IDS = [1]
+
+export const enabledLabs = labs.filter((lab) => ENABLED_LAB_IDS.includes(lab.id))
+
+export function isLabEnabled(labId) {
+  return ENABLED_LAB_IDS.includes(labId)
+}
+
 export function getLabBySlug(slug) {
-  return labs.find((lab) => lab.slug === slug)
+  return enabledLabs.find((lab) => lab.slug === slug)
 }

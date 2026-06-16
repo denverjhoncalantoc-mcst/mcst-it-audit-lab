@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import CopyPrintButtons from '../components/CopyPrintButtons'
 import { evidenceCategories, evidenceFilters, evidenceItems } from '../data/evidence'
+import { isLabEnabled } from '../data/labs'
 
 export default function EvidenceRepository() {
   const [searchParams] = useSearchParams()
@@ -130,15 +131,25 @@ export default function EvidenceRepository() {
                   {item.content}
                 </pre>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {item.relatedLabs.map((labId) => (
-                    <Link
-                      key={labId}
-                      to={`/laboratory/lab-${labId}`}
-                      className="rounded-full bg-mcst-50 px-3 py-1 text-xs font-medium text-mcst-700 hover:bg-mcst-100"
-                    >
-                      Lab {labId}
-                    </Link>
-                  ))}
+                  {item.relatedLabs.map((labId) =>
+                    isLabEnabled(labId) ? (
+                      <Link
+                        key={labId}
+                        to={`/laboratory/lab-${labId}`}
+                        className="rounded-full bg-mcst-50 px-3 py-1 text-xs font-medium text-mcst-700 hover:bg-mcst-100"
+                      >
+                        Lab {labId}
+                      </Link>
+                    ) : (
+                      <span
+                        key={labId}
+                        className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-400"
+                        title="Not yet available"
+                      >
+                        Lab {labId}
+                      </span>
+                    )
+                  )}
                 </div>
                 <p className="mt-4 rounded-lg border border-amber-100 bg-amber-50 p-3 text-sm text-amber-900">
                   <strong>Notes for students:</strong> {item.studentNotes}
