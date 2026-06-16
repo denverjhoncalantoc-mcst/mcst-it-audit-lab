@@ -15,6 +15,10 @@ export default function Layout() {
         </main>
         <footer className="border-t border-mcst-100 bg-white px-6 py-4 text-center text-xs text-slate-500">
           MCST IT Audit Lab Sandbox &mdash; PEIS002 IT Audits and Control &mdash; For academic use only
+          <span className="mx-2">·</span>
+          <a href="/admin/login" className="text-mcst-600 hover:text-mcst-800">
+            Admin
+          </a>
         </footer>
       </div>
     </div>

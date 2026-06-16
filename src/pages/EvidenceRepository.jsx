@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import CopyPrintButtons from '../components/CopyPrintButtons'
 import { evidenceCategories, evidenceFilters, evidenceItems } from '../data/evidence'
-import { isLabEnabled } from '../data/labs'
+import { useLabAccess } from '../context/LabAccessContext'
 
 export default function EvidenceRepository() {
+  const { isLabEnabled } = useLabAccess()
   const [searchParams] = useSearchParams()
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')

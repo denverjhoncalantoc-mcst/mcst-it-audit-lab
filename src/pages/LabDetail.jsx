@@ -5,12 +5,17 @@ import LabBadges from '../components/LabBadges'
 import PhaseSection from '../components/PhaseSection'
 import SectionCard from '../components/SectionCard'
 import SubmissionRequirements from '../components/SubmissionRequirements'
+import { useLabAccess } from '../context/LabAccessContext'
 import { getEvidenceById } from '../data/evidence'
-import { getLabBySlug } from '../data/labs'
 
 export default function LabDetail() {
   const { slug } = useParams()
+  const { getLabBySlug, loading } = useLabAccess()
   const lab = getLabBySlug(slug)
+
+  if (loading) {
+    return <p className="text-sm text-slate-600">Loading laboratory…</p>
+  }
 
   if (!lab) {
     return (

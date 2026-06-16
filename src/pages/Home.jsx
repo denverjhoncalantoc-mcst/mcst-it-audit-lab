@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { enabledLabs } from '../data/labs'
+import { useLabAccess } from '../context/LabAccessContext'
 
 const labStructure = [
   { range: 'Labs 1–8', label: 'Guided Audit Investigation Activities', description: 'Phased evidence review, risk assessment, control evaluation, and findings documentation.' },
@@ -10,6 +10,8 @@ const labStructure = [
 ]
 
 export default function Home() {
+  const { enabledLabs, loading } = useLabAccess()
+
   return (
     <div className="mx-auto max-w-5xl space-y-8">
       <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-mcst-800 to-mcst-950 px-6 py-10 text-white sm:px-10 sm:py-14">
@@ -111,7 +113,10 @@ export default function Home() {
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {enabledLabs.map((lab) => (
+          {loading ? (
+            <p className="text-sm text-slate-600">Loading available laboratories…</p>
+          ) : (
+            enabledLabs.map((lab) => (
             <Link
               key={lab.id}
               to={`/laboratory/${lab.slug}`}
@@ -124,7 +129,8 @@ export default function Home() {
               </div>
               <h3 className="mt-1 font-medium text-slate-900">{lab.title}</h3>
             </Link>
-          ))}
+            ))
+          )}
         </div>
       </section>
     </div>

@@ -8,11 +8,15 @@ import EvidenceRepository from './pages/EvidenceRepository'
 import HitlFramework from './pages/HitlFramework'
 import AiDeclaration from './pages/AiDeclaration'
 import FinalProject from './pages/FinalProject'
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminDashboard from './pages/admin/AdminDashboard'
 
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="laboratory" element={<LaboratoryActivities />} />

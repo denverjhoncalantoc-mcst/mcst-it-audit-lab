@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react'
 import LabCard from '../components/LabCard'
-import { enabledLabs, labs } from '../data/labs'
-
-const allLabsReleased = enabledLabs.length === labs.length
+import { useLabAccess } from '../context/LabAccessContext'
+import { labs } from '../data/labs'
 
 const typeFilters = [
   { id: 'all', label: 'All Laboratories' },
@@ -11,6 +10,7 @@ const typeFilters = [
 ]
 
 export default function LaboratoryActivities() {
+  const { enabledLabs, allLabsReleased, loading } = useLabAccess()
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
 
@@ -27,7 +27,11 @@ export default function LaboratoryActivities() {
         lab.shortDescription?.toLowerCase().includes(query)
       return matchesType && matchesSearch
     })
-  }, [search, typeFilter])
+  }, [enabledLabs, search, typeFilter])
+
+  if (loading) {
+    return <p className="text-sm text-slate-600">Loading available laboratories…</p>
+  }
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -36,7 +40,7 @@ export default function LaboratoryActivities() {
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
           {allLabsReleased
             ? 'Fourteen phased audit engagements forming a semester-long investigation of MCST Retail Corporation. Each laboratory session requires approximately 2.5 to 3 hours and follows structured audit methodology with evidence review, analysis, and offline deliverables.'
-            : `Phased audit investigations for MCST Retail Corporation. Currently, Lab ${enabledLabs.map((l) => l.id).join(', Lab ')} is available; additional laboratories will be released throughout the semester.`}
+            : `Phased audit investigations for MCST Retail Corporation. Currently, Lab ${enabledLabs.map((l) => l.id).join(', Lab ')} ${enabledLabs.length === 1 ? 'is' : 'are'} available; additional laboratories will be released throughout the semester.`}
         </p>
       </div>
 
