@@ -31,16 +31,28 @@ Set these in **Vercel → Project → Settings → Environment Variables**:
 | `GITHUB_TOKEN` | **Required on Vercel** | GitHub PAT with `contents: write` on the repo |
 
 Without `GITHUB_TOKEN` on Vercel, admin login works but **saving enabled labs will fail** because the serverless filesystem is read-only.
+
 | `GITHUB_REPO` | Optional | Default: `denverjhoncalantoc-mcst/mcst-it-audit-lab` |
 | `GITHUB_BRANCH` | Optional | Default: `main` |
 | `ENABLED_LAB_IDS` | Fallback | Default: `1` if config file cannot be read |
 
 ### GitHub token setup
 
-1. GitHub → **Settings → Developer settings → Personal access tokens**
-2. Create a fine-grained token with **Contents: Read and write** on `mcst-it-audit-lab`
-3. Add as `GITHUB_TOKEN` in Vercel
-4. Redeploy
+1. GitHub → **Settings → Developer settings → Personal access tokens → Fine-grained tokens**
+2. **Resource owner:** your GitHub account (must have write access to the repo)
+3. **Repository access:** Only select repositories → `mcst-it-audit-lab`
+4. **Permissions → Repository permissions → Contents:** Read and write
+5. Generate the token and copy it once
+6. In Vercel, set:
+   - `GITHUB_TOKEN` = the token only (no quotes, no spaces)
+   - `GITHUB_REPO` = `denverjhoncalantoc-mcst/mcst-it-audit-lab` (not the full `https://github.com/...` URL)
+   - `GITHUB_BRANCH` = `main`
+7. Apply to **Production** (and Preview if you test there)
+8. **Redeploy** after saving env vars
+
+**Organization SSO:** If `denverjhoncalantoc-mcst` uses SAML SSO, open the token on GitHub and click **Configure SSO** → **Authorize** for that organization. Without this step, GitHub returns 403 even with a valid token.
+
+**Diagnostic (after admin login):** open `/api/admin/github-status` in the browser to see whether Vercel can read `labs-config.json` and the exact GitHub error message.
 
 ## Local development
 
@@ -65,6 +77,9 @@ Without `GITHUB_TOKEN` locally, admin save updates `labs-config.json` and `publi
 | `Admin login is not configured` | Add `ADMIN_PASSWORD` in Vercel env vars or `.env.local`, then redeploy/restart |
 | `Invalid admin credentials` | Password does not match `ADMIN_PASSWORD` exactly |
 | Login succeeds but dashboard kicks you out | Redeploy after cookie fix; clear browser cookies for the site |
+| `Unable to read labs-config.json from GitHub` | Open `/api/admin/github-status` while logged in. Usually: SSO not authorized, wrong `GITHUB_REPO` format, or token missing Contents write |
+| `GitHub token lacks repository access` | Authorize token for org SSO; confirm Contents: Read and write on `mcst-it-audit-lab` |
+| `GitHub rejected the token` | Regenerate token; paste into Vercel `GITHUB_TOKEN` without quotes; redeploy |
 | `Unable to save laboratory settings` | Add `GITHUB_TOKEN` with repo write access in Vercel → Redeploy |
 | `EROFS: read-only file system` | Same fix — `GITHUB_TOKEN` was missing on Vercel |
 | Works locally but not on Vercel | Set `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET` in Vercel → Environment Variables → Redeploy |
