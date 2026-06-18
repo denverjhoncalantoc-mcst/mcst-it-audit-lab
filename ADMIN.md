@@ -28,7 +28,9 @@ Set these in **Vercel → Project → Settings → Environment Variables**:
 |----------|----------|-------------|
 | `ADMIN_PASSWORD` | Yes | Instructor admin password |
 | `ADMIN_SESSION_SECRET` | Recommended | Random string for session signing (can match a long password) |
-| `GITHUB_TOKEN` | Yes for production saves | GitHub PAT with `contents: write` on the repo |
+| `GITHUB_TOKEN` | **Required on Vercel** | GitHub PAT with `contents: write` on the repo |
+
+Without `GITHUB_TOKEN` on Vercel, admin login works but **saving enabled labs will fail** because the serverless filesystem is read-only.
 | `GITHUB_REPO` | Optional | Default: `denverjhoncalantoc-mcst/mcst-it-audit-lab` |
 | `GITHUB_BRANCH` | Optional | Default: `main` |
 | `ENABLED_LAB_IDS` | Fallback | Default: `1` if config file cannot be read |
@@ -63,7 +65,8 @@ Without `GITHUB_TOKEN` locally, admin save updates `labs-config.json` and `publi
 | `Admin login is not configured` | Add `ADMIN_PASSWORD` in Vercel env vars or `.env.local`, then redeploy/restart |
 | `Invalid admin credentials` | Password does not match `ADMIN_PASSWORD` exactly |
 | Login succeeds but dashboard kicks you out | Redeploy after cookie fix; clear browser cookies for the site |
-| `Unable to save laboratory settings` | Add `GITHUB_TOKEN` with repo write access in Vercel |
+| `Unable to save laboratory settings` | Add `GITHUB_TOKEN` with repo write access in Vercel → Redeploy |
+| `EROFS: read-only file system` | Same fix — `GITHUB_TOKEN` was missing on Vercel |
 | Works locally but not on Vercel | Set `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET` in Vercel → Environment Variables → Redeploy |
 
 ## Quick release presets (admin panel)

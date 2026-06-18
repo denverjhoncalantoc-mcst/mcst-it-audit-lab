@@ -56,10 +56,16 @@ async function readGithubConfig() {
   }
 }
 
+function isServerlessRuntime() {
+  return process.env.VERCEL === '1' || Boolean(process.env.AWS_EXECUTION_ENV)
+}
+
 async function writeGithubConfig(enabledLabIds) {
   const token = process.env.GITHUB_TOKEN
   if (!token) {
-    throw new Error('GITHUB_TOKEN is not configured on the server.')
+    throw new Error(
+      'GITHUB_TOKEN is not configured. Add a GitHub personal access token with Contents write access in Vercel Environment Variables, then redeploy.',
+    )
   }
 
   const repo = process.env.GITHUB_REPO || 'denverjhoncalantoc-mcst/mcst-it-audit-lab'
@@ -105,7 +111,12 @@ async function writeGithubConfig(enabledLabIds) {
   })
 
   if (!response.ok) {
-    throw new Error('Unable to save laboratory settings to GitHub.')
+    if (response.status === 401 || response.status === 403) {
+      throw new Error(
+        'GitHub token is invalid or does not have write access to labs-config.json in the repository.',
+      )
+    }
+    throw new Error(`Unable to save laboratory settings to GitHub (HTTP ${response.status}).`)
   }
 
   return payload
@@ -132,7 +143,7 @@ export async function getLabConfig() {
 export async function saveLabConfig(enabledLabIds) {
   const normalized = normalizeLabIds(enabledLabIds)
 
-  if (process.env.GITHUB_TOKEN) {
+  if (isServerlessRuntime() || process.env.GITHUB_TOKEN) {
     return writeGithubConfig(normalized)
   }
 
